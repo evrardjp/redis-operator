@@ -125,7 +125,7 @@ func generateRedisReplicationContainerParams(cr *redisv1beta2.RedisReplication) 
 		ImagePullPolicy: cr.Spec.KubernetesConfig.ImagePullPolicy,
 		Resources:       cr.Spec.KubernetesConfig.Resources,
 		SecurityContext: cr.Spec.SecurityContext,
-		Port:            ptr.To(6379),
+		Port:            ptr.To(redisPort),
 	}
 	if cr.Spec.EnvVars != nil {
 		containerProp.EnvVars = cr.Spec.EnvVars
@@ -145,6 +145,7 @@ func generateRedisReplicationContainerParams(cr *redisv1beta2.RedisReplication) 
 	if cr.Spec.RedisExporter != nil {
 		containerProp.RedisExporterImage = cr.Spec.RedisExporter.Image
 		containerProp.RedisExporterImagePullPolicy = cr.Spec.RedisExporter.ImagePullPolicy
+		containerProp.RedisExporterSecurityContext = cr.Spec.RedisExporter.SecurityContext
 
 		if cr.Spec.RedisExporter.Resources != nil {
 			containerProp.RedisExporterResources = cr.Spec.RedisExporter.Resources
@@ -154,10 +155,10 @@ func generateRedisReplicationContainerParams(cr *redisv1beta2.RedisReplication) 
 		}
 	}
 	if cr.Spec.ReadinessProbe != nil {
-		containerProp.ReadinessProbe = &cr.Spec.ReadinessProbe.Probe
+		containerProp.ReadinessProbe = cr.Spec.ReadinessProbe
 	}
 	if cr.Spec.LivenessProbe != nil {
-		containerProp.LivenessProbe = &cr.Spec.LivenessProbe.Probe
+		containerProp.LivenessProbe = cr.Spec.LivenessProbe
 	}
 	if cr.Spec.Storage != nil {
 		containerProp.PersistenceEnabled = &trueProperty
@@ -188,6 +189,7 @@ func generateRedisReplicationInitContainerParams(cr *redisv1beta2.RedisReplicati
 			AdditionalEnvVariable: initContainer.EnvVars,
 			Command:               initContainer.Command,
 			Arguments:             initContainer.Args,
+			SecurityContext:       initContainer.SecurityContext,
 		}
 
 		if cr.Spec.Storage != nil {
@@ -208,6 +210,12 @@ func IsRedisReplicationReady(ctx context.Context, logger logr.Logger, client kub
 		return false
 	}
 	if sts.Status.ReadyReplicas != *sts.Spec.Replicas {
+		return false
+	}
+	if sts.Status.ObservedGeneration != sts.Generation {
+		return false
+	}
+	if sts.Status.UpdateRevision != sts.Status.CurrentRevision {
 		return false
 	}
 	// Enhanced check: When the pod is ready, it may not have been

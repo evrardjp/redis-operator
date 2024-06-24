@@ -121,7 +121,7 @@ func generateRedisStandaloneContainerParams(cr *redisv1beta2.Redis) containerPar
 		ImagePullPolicy: cr.Spec.KubernetesConfig.ImagePullPolicy,
 		Resources:       cr.Spec.KubernetesConfig.Resources,
 		SecurityContext: cr.Spec.SecurityContext,
-		Port:            ptr.To(6379),
+		Port:            ptr.To(redisPort),
 	}
 
 	if cr.Spec.EnvVars != nil {
@@ -150,12 +150,13 @@ func generateRedisStandaloneContainerParams(cr *redisv1beta2.Redis) containerPar
 		if cr.Spec.RedisExporter.EnvVars != nil {
 			containerProp.RedisExporterEnv = cr.Spec.RedisExporter.EnvVars
 		}
+		containerProp.RedisExporterSecurityContext = cr.Spec.RedisExporter.SecurityContext
 	}
 	if cr.Spec.ReadinessProbe != nil {
-		containerProp.ReadinessProbe = &cr.Spec.ReadinessProbe.Probe
+		containerProp.ReadinessProbe = cr.Spec.ReadinessProbe
 	}
 	if cr.Spec.LivenessProbe != nil {
-		containerProp.LivenessProbe = &cr.Spec.LivenessProbe.Probe
+		containerProp.LivenessProbe = cr.Spec.LivenessProbe
 	}
 	if cr.Spec.Storage != nil {
 		containerProp.PersistenceEnabled = &trueProperty
@@ -186,6 +187,7 @@ func generateRedisStandaloneInitContainerParams(cr *redisv1beta2.Redis) initCont
 			AdditionalEnvVariable: initContainer.EnvVars,
 			Command:               initContainer.Command,
 			Arguments:             initContainer.Args,
+			SecurityContext:       initContainer.SecurityContext,
 		}
 
 		if cr.Spec.Storage != nil {
