@@ -7,10 +7,17 @@ spec:
   clusterSize: 3
   clusterVersion: v7
   persistenceEnabled: true
+  redisConfig:
+    dynamicConfig:
+      - "slowlog-log-slower-than 5000"
   podSecurityContext:
     runAsUser: 1000
     fsGroup: 1000
   kubernetesConfig:
+    service:
+      headless:
+        additionalAnnotations:
+          test: test
     image: quay.io/opstree/redis:latest
     imagePullPolicy: Always
     resources:
@@ -20,6 +27,9 @@ spec:
       limits:
         cpu: 101m
         memory: 128Mi
+    redisSecret:
+      name: redis-secret
+      key: password
   redisExporter:
     enabled: true
     image: quay.io/opstree/redis-exporter:v1.44.0

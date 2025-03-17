@@ -31,10 +31,9 @@ type RedisClusterSpec struct {
 	// +kubebuilder:default:=6379
 	Port *int `json:"port,omitempty"`
 	// +kubebuilder:default:=v7
-	ClusterVersion *string `json:"clusterVersion,omitempty"`
-	// +kubebuilder:default:={livenessProbe:{initialDelaySeconds: 1, timeoutSeconds: 1, periodSeconds: 10, successThreshold: 1, failureThreshold:3}, readinessProbe:{initialDelaySeconds: 1, timeoutSeconds: 1, periodSeconds: 10, successThreshold: 1, failureThreshold:3}}
-	RedisLeader RedisLeader `json:"redisLeader,omitempty"`
-	// +kubebuilder:default:={livenessProbe:{initialDelaySeconds: 1, timeoutSeconds: 1, periodSeconds: 10, successThreshold: 1, failureThreshold:3}, readinessProbe:{initialDelaySeconds: 1, timeoutSeconds: 1, periodSeconds: 10, successThreshold: 1, failureThreshold:3}}
+	ClusterVersion     *string                      `json:"clusterVersion,omitempty"`
+	RedisConfig        *RedisConfig                 `json:"redisConfig,omitempty"`
+	RedisLeader        RedisLeader                  `json:"redisLeader,omitempty"`
 	RedisFollower      RedisFollower                `json:"redisFollower,omitempty"`
 	RedisExporter      *RedisExporter               `json:"redisExporter,omitempty"`
 	Storage            *ClusterStorage              `json:"storage,omitempty"`
@@ -48,6 +47,7 @@ type RedisClusterSpec struct {
 	ServiceAccountName *string                      `json:"serviceAccountName,omitempty"`
 	PersistenceEnabled *bool                        `json:"persistenceEnabled,omitempty"`
 	EnvVars            *[]corev1.EnvVar             `json:"env,omitempty"`
+	HostPort           *int                         `json:"hostPort,omitempty"`
 }
 
 func (cr *RedisClusterSpec) GetReplicaCounts(t string) int32 {
@@ -60,18 +60,49 @@ func (cr *RedisClusterSpec) GetReplicaCounts(t string) int32 {
 	return *replica
 }
 
+// GetRedisLeaderResources returns the resources for the redis leader, if not set, it will return the default resources
+func (cr *RedisClusterSpec) GetRedisLeaderResources() *corev1.ResourceRequirements {
+	if cr.RedisLeader.Resources != nil {
+		return cr.RedisLeader.Resources
+	}
+
+	return cr.KubernetesConfig.Resources
+}
+
+// GetRedisDynamicConfig returns Redis dynamic configuration parameters.
+// Priority: top-level config > leader config > follower config
+func (cr *RedisClusterSpec) GetRedisDynamicConfig() []string {
+	// Use top-level configuration if available
+	if cr.RedisConfig != nil && len(cr.RedisConfig.DynamicConfig) > 0 {
+		return cr.RedisConfig.DynamicConfig
+	}
+	// Return empty slice if no configuration is found
+	return []string{}
+}
+
+// GetRedisFollowerResources returns the resources for the redis follower, if not set, it will return the default resources
+func (cr *RedisClusterSpec) GetRedisFollowerResources() *corev1.ResourceRequirements {
+	if cr.RedisFollower.Resources != nil {
+		return cr.RedisFollower.Resources
+	}
+
+	return cr.KubernetesConfig.Resources
+}
+
 // RedisLeader interface will have the redis leader configuration
 type RedisLeader struct {
 	common.RedisLeader            `json:",inline"`
-	SecurityContext               *corev1.SecurityContext `json:"securityContext,omitempty"`
-	TerminationGracePeriodSeconds *int64                  `json:"terminationGracePeriodSeconds,omitempty" protobuf:"varint,4,opt,name=terminationGracePeriodSeconds"`
+	SecurityContext               *corev1.SecurityContext      `json:"securityContext,omitempty"`
+	TerminationGracePeriodSeconds *int64                       `json:"terminationGracePeriodSeconds,omitempty" protobuf:"varint,4,opt,name=terminationGracePeriodSeconds"`
+	Resources                     *corev1.ResourceRequirements `json:"resources,omitempty"`
 }
 
 // RedisFollower interface will have the redis follower configuration
 type RedisFollower struct {
 	common.RedisFollower          `json:",inline"`
-	SecurityContext               *corev1.SecurityContext `json:"securityContext,omitempty"`
-	TerminationGracePeriodSeconds *int64                  `json:"terminationGracePeriodSeconds,omitempty" protobuf:"varint,4,opt,name=terminationGracePeriodSeconds"`
+	SecurityContext               *corev1.SecurityContext      `json:"securityContext,omitempty"`
+	TerminationGracePeriodSeconds *int64                       `json:"terminationGracePeriodSeconds,omitempty" protobuf:"varint,4,opt,name=terminationGracePeriodSeconds"`
+	Resources                     *corev1.ResourceRequirements `json:"resources,omitempty"`
 }
 
 // RedisClusterStatus defines the observed state of RedisCluster

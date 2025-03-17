@@ -7,15 +7,17 @@ description: >
   CRD Schema details for Redis and Redis Cluster Reference API
 ---
 
-# API Reference
+# Redis API Reference
+
+This page documents the Redis API Schema definitions for the redis API group.
 
 ## Packages
 
-- [redis.redis.opstreelabs.in/v1beta1](#redisredisopstreelabsinv1beta1)
+- [redis.redis.opstreelabs.in/v1beta2](#redisredisopstreelabsinv1beta2)
 
-## redis.redis.opstreelabs.in/v1beta1
+## redis.redis.opstreelabs.in/v1beta2
 
-Package v1beta1 contains API Schema definitions for the redis v1beta1 API group
+Package v1beta2 contains API Schema definitions for the redis v1beta2 API group
 
 ### Resource Types
 
@@ -51,41 +53,34 @@ _Appears in:_
 | Field | Description |
 | --- | --- |
 | `image` _string_ |  |
-| `imagePullPolicy` _[PullPolicy](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#pullpolicy-v1-core)_ |  |
-| `resources` _[ResourceRequirements](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#resourcerequirements-v1-core)_ |  |
+| `imagePullPolicy` _[ImagePullPolicy](https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy)_ |  |
+| `resources` _[ResourceRequirements](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#resourcerequirements-v1-core)_ |  |
 | `redisSecret` _[ExistingPasswordSecret](#existingpasswordsecret)_ |  |
-| `imagePullSecrets` _[LocalObjectReference](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#localobjectreference-v1-core)_ |  |
-| `updateStrategy` _[StatefulSetUpdateStrategy](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#statefulsetupdatestrategy-v1-apps)_ |  |
+| `imagePullSecrets` _[LocalObjectReference](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#localobjectreference-v1-core)_ |  |
+| `updateStrategy` _[StatefulSetUpdateStrategy](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#statefulsetupdatestrategy-v1-apps)_ |  |
 
-#### Probe
+#### VolumeMount
 
-Probe is a interface for ReadinessProbe and LivenessProbe
+Mount External Volumes
 
 _Appears in:_
 
-- [RedisFollower](#redisfollower)
-- [RedisLeader](#redisleader)
-- [RedisSpec](#redisspec)
-- [RedisReplicationSpec](#redisreplicationspec)
 - [RedisSentinel](#redissentinelspec)
 
 | Field | Description |
 | --- | --- |
-| `initialDelaySeconds` _integer_ |  |
-| `timeoutSeconds` _integer_ |  |
-| `periodSeconds` _integer_ |  |
-| `successThreshold` _integer_ |  |
-| `failureThreshold` _integer_ |  |
+| `volume` _[Volume Array](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#volume-v1-core)_ |  |
+| `mountPath` _[VolumeMount Array](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#volumemount-v1-core)_ |  |
 
 #### Redis
 
 Redis is the Schema for the redis API
 
-| Field | Description |
-| --- | --- |
-| `apiVersion` _string_ | `redis.redis.opstreelabs.in/v1beta1`
+| Field | Description | Scheme | Required |
+| ----- | ----------- | ------ | -------- |
+| `apiVersion` _string_ | `redis.redis.opstreelabs.in/v1beta2` | | |
 | `kind` _string_ | `Redis`
-| `metadata` _[ObjectMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#objectmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |
+| `metadata` _[ObjectMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#objectmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |
 | `spec` _[RedisSpec](#redisspec)_ |  |
 
 #### RedisCluster
@@ -94,9 +89,9 @@ RedisCluster is the Schema for the redisclusters API
 
 | Field | Description |
 | --- | --- |
-| `apiVersion` _string_ | `redis.redis.opstreelabs.in/v1beta1`
+| `apiVersion` _string_ | `redis.redis.opstreelabs.in/v1beta2`
 | `kind` _string_ | `RedisCluster`
-| `metadata` _[ObjectMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#objectmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |
+| `metadata` _[ObjectMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#objectmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |
 | `spec` _[RedisClusterSpec](#redisclusterspec)_ |  |
 
 #### RedisReplication
@@ -105,9 +100,9 @@ RedisReplication is the Schema for the redisreplication API
 
 | Field | Description |
 | --- | --- |
-| `apiVersion` _string_ | `redis.redis.opstreelabs.in/v1beta1`
+| `apiVersion` _string_ | `redis.redis.opstreelabs.in/v1beta2`
 | `kind` _string_ | `RedisReplication`
-| `metadata` _[ObjectMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#objectmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |
+| `metadata` _[ObjectMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#objectmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |
 | `spec` _[RedisReplicationSpec](#redisreplicationspec)_ |  |
 
 #### RedisSentinel
@@ -116,9 +111,9 @@ RedisSentinel is the Schema for the redissentinel API
 
 | Field | Description |
 | --- | --- |
-| `apiVersion` _string_ | `redis.redis.opstreelabs.in/v1beta1`
+| `apiVersion` _string_ | `redis.redis.opstreelabs.in/v1beta2`
 | `kind` _string_ | `RedisSentinel`
-| `metadata` _[ObjectMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#objectmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |
+| `metadata` _[ObjectMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#objectmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |
 | `spec` _[RedisSentinelSpec](#redissentinelspec)_ |  |
 
 #### RedisClusterSpec
@@ -139,10 +134,10 @@ _Appears in:_
 | `redisExporter` _[RedisExporter](#redisexporter)_ |  |
 | `storage` _[Storage](#storage)_ |  |
 | `nodeSelector` _object (keys:string, values:string)_ |  |
-| `securityContext` _[PodSecurityContext](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#podsecuritycontext-v1-core)_ |  |
+| `securityContext` _[PodSecurityContext](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#podsecuritycontext-v1-core)_ |  |
 | `priorityClassName` _string_ |  |
-| `tolerations` _[Toleration](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#toleration-v1-core)_ |  |
-| `resources` _[ResourceRequirements](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#resourcerequirements-v1-core)_ |  |
+| `tolerations` _[Toleration](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#toleration-v1-core)_ |  |
+| `resources` _[ResourceRequirements](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#resourcerequirements-v1-core)_ |  |
 | `TLS` _[TLSConfig](#tlsconfig)_ |  |
 | `sidecars` _[Sidecar](#sidecar)_ |  |
 | `serviceAccountName` _string_ |  |
@@ -163,13 +158,13 @@ _Appears in:_
 | `redisConfig` _[RedisConfig](#redisconfig)_ |  |
 | `storage` _[Storage](#storage)_ |  |
 | `nodeSelector` _object (keys:string, values:string)_ |  |
-| `securityContext` _[PodSecurityContext](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#podsecuritycontext-v1-core)_ |  |
+| `securityContext` _[PodSecurityContext](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#podsecuritycontext-v1-core)_ |  |
 | `priorityClassName` _string_ |  |
-| `affinity` _[Affinity](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#affinity-v1-core)_ |  |
-| `tolerations` _[Toleration](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#toleration-v1-core)_ |  |
+| `affinity` _[Affinity](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#affinity-v1-core)_ |  |
+| `tolerations` _[Toleration](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#toleration-v1-core)_ |  |
 | `TLS` _[TLSConfig](#tlsconfig)_ |  |
-| `readinessProbe` _[Probe](#probe)_ |  |
-| `livenessProbe` _[Probe](#probe)_ |  |
+| `readinessProbe` _[Probe](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#probe-v1-core)_ |  |
+| `livenessProbe` _[Probe](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#probe-v1-core)_ |  |
 | `sidecars` _[Sidecar](#sidecar)_ |  |
 | `serviceAccountName` _string_ |  |
 
@@ -189,13 +184,13 @@ _Appears in:_
 | `redisConfig` _[RedisConfig](#redisconfig)_ |  |
 | `storage` _[Storage](#storage)_ |  |
 | `nodeSelector` _object (keys:string, values:string)_ |  |
-| `securityContext` _[PodSecurityContext](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#podsecuritycontext-v1-core)_ |  |
+| `securityContext` _[PodSecurityContext](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#podsecuritycontext-v1-core)_ |  |
 | `priorityClassName` _string_ |  |
-| `affinity` _[Affinity](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#affinity-v1-core)_ |  |
-| `tolerations` _[Toleration](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#toleration-v1-core)_ |  |
+| `affinity` _[Affinity](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#affinity-v1-core)_ |  |
+| `tolerations` _[Toleration](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#toleration-v1-core)_ |  |
 | `TLS` _[TLSConfig](#tlsconfig)_ |  |
-| `readinessProbe` _[Probe](#probe)_ |  |
-| `livenessProbe` _[Probe](#probe)_ |  |
+| `readinessProbe` _[Probe](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#probe-v1-core)_ |  |
+| `livenessProbe` _[Probe](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#probe-v1-core)_ |  |
 | `sidecars` _[Sidecar](#sidecar)_ |  |
 | `serviceAccountName` _string_ |  |
 
@@ -213,15 +208,16 @@ _Appears in:_
 | `kubernetesConfig` _[KubernetesConfig](#kubernetesconfig)_ |  |
 | `redisSentinelConfig` _[RedisSentinelConfig](#redissentinelconfig)_ |  |
 | `nodeSelector` _object (keys:string, values:string)_ |  |
-| `securityContext` _[PodSecurityContext](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#podsecuritycontext-v1-core)_ |  |
+| `securityContext` _[PodSecurityContext](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#podsecuritycontext-v1-core)_ |  |
 | `priorityClassName` _string_ |  |
-| `affinity` _[Affinity](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#affinity-v1-core)_ |  |
-| `tolerations` _[Toleration](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#toleration-v1-core)_ |  |
+| `affinity` _[Affinity](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#affinity-v1-core)_ |  |
+| `tolerations` _[Toleration](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#toleration-v1-core)_ |  |
 | `TLS` _[TLSConfig](#tlsconfig)_ |  |
-| `readinessProbe` _[Probe](#probe)_ |  |
-| `livenessProbe` _[Probe](#probe)_ |  |
+| `readinessProbe` _[Probe](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#probe-v1-core)_ |  |
+| `livenessProbe` _[Probe](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#probe-v1-core)_ |  |
 | `sidecars` _[Sidecar](#sidecar)_ |  |
 | `serviceAccountName` _string_ |  |
+| `volumeMount` _[VolumeMount](#volumemount)_ |  |
 
 #### RedisConfig
 
@@ -255,6 +251,8 @@ _Appears in:_
 | `parallelSyncs` _string_ |  |
 | `failoverTimeout` _string_ |  |
 | `downAfterMilliseconds` _string_ |  |
+| `resolveHostnames` _string_ |  |
+| `announceHostnames` _string_ |  |
 
 #### RedisExporter
 
@@ -270,9 +268,10 @@ _Appears in:_
 | --- | --- |
 | `enabled` _boolean_ |  |
 | `image` _string_ |  |
-| `resources` _[ResourceRequirements](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#resourcerequirements-v1-core)_ |  |
-| `imagePullPolicy` _[PullPolicy](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#pullpolicy-v1-core)_ |  |
-| `env` _[EnvVar](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#envvar-v1-core)_ |  |
+| `resources` _[ResourceRequirements](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#resourcerequirements-v1-core)_ |  |
+| `imagePullPolicy` _[ImagePullPolicy](https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy)_ |  |
+| `env` _[EnvVar](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#envvar-v1-core)_ |  |
+| `securityContext` _[PodSecurityContext](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#podsecuritycontext-v1-core)_ |  |
 
 #### RedisFollower
 
@@ -286,10 +285,10 @@ _Appears in:_
 | --- | --- |
 | `replicas` _integer_ |  |
 | `redisConfig` _[RedisConfig](#redisconfig)_ |  |
-| `affinity` _[Affinity](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#affinity-v1-core)_ |  |
+| `affinity` _[Affinity](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#affinity-v1-core)_ |  |
 | `pdb` _[RedisPodDisruptionBudget](#redispoddisruptionbudget)_ |  |
-| `readinessProbe` _[Probe](#probe)_ |  |
-| `livenessProbe` _[Probe](#probe)_ |  |
+| `readinessProbe` _[Probe](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#probe-v1-core)_ |  |
+| `livenessProbe` _[Probe](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#probe-v1-core)_ |  |
 
 #### RedisLeader
 
@@ -303,10 +302,10 @@ _Appears in:_
 | --- | --- |
 | `replicas` _integer_ |  |
 | `redisConfig` _[RedisConfig](#redisconfig)_ |  |
-| `affinity` _[Affinity](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#affinity-v1-core)_ |  |
+| `affinity` _[Affinity](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#affinity-v1-core)_ |  |
 | `pdb` _[RedisPodDisruptionBudget](#redispoddisruptionbudget)_ |  |
-| `readinessProbe` _[Probe](#probe)_ |  |
-| `livenessProbe` _[Probe](#probe)_ |  |
+| `readinessProbe` _[Probe](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#probe-v1-core)_ |  |
+| `livenessProbe` _[Probe](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#probe-v1-core)_ |  |
 
 #### RedisPodDisruptionBudget
 
@@ -340,9 +339,10 @@ _Appears in:_
 | --- | --- |
 | `name` _string_ |  |
 | `image` _string_ |  |
-| `imagePullPolicy` _[PullPolicy](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#pullpolicy-v1-core)_ |  |
-| `resources` _[ResourceRequirements](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#resourcerequirements-v1-core)_ |  |
-| `env` _[EnvVar](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#envvar-v1-core)_ |  |
+| `imagePullPolicy` _[ImagePullPolicy](https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy)_ |  |
+| `resources` _[ResourceRequirements](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#resourcerequirements-v1-core)_ |  |
+| `env` _[EnvVar](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#envvar-v1-core)_ |  |
+| `securityContext` _[PodSecurityContext](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#podsecuritycontext-v1-core)_ |  |
 
 #### Storage
 
@@ -356,7 +356,7 @@ _Appears in:_
 
 | Field | Description |
 | --- | --- |
-| `volumeClaimTemplate` _[PersistentVolumeClaim](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#persistentvolumeclaim-v1-core)_ |  |
+| `volumeClaimTemplate` _[PersistentVolumeClaim](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#persistentvolumeclaim-v1-core)_ |  |
 
 #### TLSConfig
 
@@ -374,4 +374,4 @@ _Appears in:_
 | `ca` _string_ |  |
 | `cert` _string_ |  |
 | `key` _string_ |  |
-| `secret` _[SecretVolumeSource](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#secretvolumesource-v1-core)_ | Reference to secret which contains the certificates |
+| `secret` _[SecretVolumeSource](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#secretvolumesource-v1-core)_ | Reference to secret which contains the certificates |

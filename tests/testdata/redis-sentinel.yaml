@@ -37,6 +37,7 @@ spec:
       name: redis-secret
       key: password
     ignoreAnnotations: [opstreelabs.in/ignore]
+    minReadySeconds: 5
   redisExporter:
     enabled: true
     image: quay.io/opstree/redis-exporter:v1.44.0
@@ -63,6 +64,14 @@ spec:
             key: username
   nodeSelector:
     node-role.kubernetes.io/infra: worker
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: kubernetes.io/hostname
+      whenUnsatisfiable: ScheduleAnyway
+      labelSelector:
+        matchLabels:
+          role: sentinel
+          app: redis-sentinel-sentinel
   priorityClassName: high-priority
   affinity:
     nodeAffinity:
@@ -116,3 +125,10 @@ spec:
           secretKeyRef:
             name: env-secrets
             key: CLUSTER_NAMESPACE
+  volumeMount:
+    mountPath:
+      - mountPath: /etc/redis
+        name: redis-config
+    volume:
+      - emptyDir: {}
+        name: redis-config
